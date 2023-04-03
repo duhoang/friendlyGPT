@@ -10,17 +10,29 @@
 <script src="https://code.jquery.com/jquery-latest.js"></script>
 
 <script>
-	$(function(){
-		$(".cell img").click(function(){
-			var srcstring = $(this).attr("src");
-			$(".lightbox-image").css("background-image", "url("+srcstring+")");
-			$(".lightbox").fadeIn();
-		});
-		$(".lightbox").click(function(){
-			$(".lightbox").fadeOut();
-		})
-	});
+	const apiKey = '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';
+	const prompt = 'Hello, how can I help you today?';
 
+	fetch('https://api.openai.com/v1/engine/davinci-codex/completions', {
+	method: 'POST',
+	headers: {
+		'Content-Type': 'application/json',
+		'Authorization': `Bearer ${apiKey}`,
+	},
+	body: JSON.stringify({
+		prompt: prompt,
+		max_tokens: 60,
+		temperature: 0.7,
+	}),
+	})
+	.then(response => response.json())
+	.then(data => {
+		const message = data.choices[0].text.trim();
+		console.log(message);
+	})
+	.catch(error => {
+		console.error(error);
+	});
 
 </script>
 
